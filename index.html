@@ -151,6 +151,43 @@
     }
   </style>
 </head>
+    <body>
+        <form id="signupForm">
+
+    <input
+        id="userName"
+        type="text"
+        placeholder="Full name"
+        required
+    >
+
+    <input
+        id="userEmail"
+        type="email"
+        placeholder="Email address"
+        required
+    >
+
+    <input
+        id="userDOB"
+        type="date"
+        required
+    >
+
+    <input
+        id="userPassword"
+        type="password"
+        placeholder="Password (minimum 6 characters)"
+        minlength="6"
+        required
+    >
+
+    <button type="submit">
+        Create account & enter dashboard
+    </button>
+
+</form>
+    </body>
 <body class="bg-surface text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen flex flex-col font-body-md text-body-md overflow-x-hidden">
 <!-- ================= TOP NAV BAR (Shared Component Anchor) ================= -->
 <header class="w-full sticky top-0 z-50 flex items-center justify-between px-space-lg h-16 bg-surface-container-low/90 backdrop-blur-md border-b border-outline-variant/30 shadow-sm">
@@ -885,7 +922,37 @@
     <div id="appPanelContent"></div>
   </div>
 </div>
+<script>
+document.getElementById("signupForm").addEventListener("submit", function(event) {
 
+    event.preventDefault();
+
+    const name = document.getElementById("userName").value.trim();
+    const email = document.getElementById("userEmail").value.trim();
+    const dob = document.getElementById("userDOB").value;
+    const password = document.getElementById("userPassword").value;
+
+    // Check details
+    if (name === "" || email === "" || dob === "" || password === "") {
+        alert("Please fill in all the details.");
+        return;
+    }
+
+    if (password.length < 6) {
+        alert("Password must contain at least 6 characters.");
+        return;
+    }
+
+    // Save user information
+    localStorage.setItem("decodeArenaName", name);
+    localStorage.setItem("decodeArenaEmail", email);
+    localStorage.setItem("decodeArenaDOB", dob);
+
+    // Go to dashboard
+    window.location.href = "main.html";
+
+});
+</script>
 <script>
 (function(){
   const STORAGE_KEY = "decodearena_demo_users_v1";
