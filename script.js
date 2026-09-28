@@ -1,103 +1,123 @@
-<!-- LOGIN SCREEN -->
-<div id="loginScreen"
-     class="fixed inset-0 z-[100] bg-[#0a0e1a] flex items-center justify-center p-4">
+// ========================================
+// DECodeArena AI - Main JavaScript
+// ========================================
 
-    <div class="w-full max-w-md bg-[#171b28] border border-[#424754] rounded-2xl p-8 shadow-2xl">
+const signupForm = document.getElementById("signupForm");
+const loginScreen = document.getElementById("loginScreen");
 
-        <div class="text-center mb-8">
-            <div class="text-4xl mb-3">⚔️</div>
 
-            <h1 class="text-2xl font-bold text-[#adc6ff]">
-                DECodeArena AI
-            </h1>
+// ========================================
+// CREATE ACCOUNT
+// ========================================
 
-            <p class="text-[#c2c6d6] text-sm mt-2">
-                Enter the arena. Build your skills.
-            </p>
-        </div>
+signupForm.addEventListener("submit", function (event) {
 
-        <form id="signupForm">
+    event.preventDefault();
 
-            <!-- NAME -->
-            <div class="mb-4">
-                <label class="block text-sm text-[#c2c6d6] mb-2">
-                    Full Name
-                </label>
+    const name = document.getElementById("userName").value.trim();
+    const dob = document.getElementById("userDOB").value;
+    const email = document.getElementById("userEmail").value.trim();
+    const password = document.getElementById("userPassword").value;
 
-                <input
-                    id="userName"
-                    type="text"
-                    required
-                    placeholder="Enter your name"
-                    class="w-full px-4 py-3 rounded-lg bg-[#0f131f]
-                    border border-[#424754] text-white
-                    focus:outline-none focus:border-[#adc6ff]"
-                >
-            </div>
+    if (!name || !dob || !email || !password) {
+        document.getElementById("loginMessage").textContent =
+            "Please fill in all fields.";
 
-            <!-- DOB -->
-            <div class="mb-4">
-                <label class="block text-sm text-[#c2c6d6] mb-2">
-                    Date of Birth
-                </label>
+        return;
+    }
 
-                <input
-                    id="userDOB"
-                    type="date"
-                    required
-                    class="w-full px-4 py-3 rounded-lg bg-[#0f131f]
-                    border border-[#424754] text-white
-                    focus:outline-none focus:border-[#adc6ff]"
-                >
-            </div>
+    if (password.length < 6) {
+        document.getElementById("loginMessage").textContent =
+            "Password must contain at least 6 characters.";
 
-            <!-- EMAIL -->
-            <div class="mb-4">
-                <label class="block text-sm text-[#c2c6d6] mb-2">
-                    Email
-                </label>
+        return;
+    }
 
-                <input
-                    id="userEmail"
-                    type="email"
-                    required
-                    placeholder="you@example.com"
-                    class="w-full px-4 py-3 rounded-lg bg-[#0f131f]
-                    border border-[#424754] text-white
-                    focus:outline-none focus:border-[#adc6ff]"
-                >
-            </div>
 
-            <!-- PASSWORD -->
-            <div class="mb-6">
-                <label class="block text-sm text-[#c2c6d6] mb-2">
-                    Password
-                </label>
+    // Save user's basic information
+    localStorage.setItem("decodeArenaUserName", name);
+    localStorage.setItem("decodeArenaUserEmail", email);
+    localStorage.setItem("decodeArenaUserDOB", dob);
 
-                <input
-                    id="userPassword"
-                    type="password"
-                    required
-                    minlength="6"
-                    placeholder="Create a password"
-                    class="w-full px-4 py-3 rounded-lg bg-[#0f131f]
-                    border border-[#424754] text-white
-                    focus:outline-none focus:border-[#adc6ff]"
-                >
-            </div>
+    // Hide login screen
+    loginScreen.style.display = "none";
 
-            <button
-                type="submit"
-                class="w-full py-3 rounded-lg bg-[#4d8eff]
-                text-[#00285d] font-bold hover:brightness-110 transition">
-                Create Account & Enter Arena
-            </button>
+    // Update dashboard
+    updateUserName(name);
+});
 
-        </form>
 
-        <p id="loginMessage"
-           class="text-center text-sm mt-4 text-red-400">
-        </p>
+// ========================================
+// UPDATE USER NAME
+// ========================================
 
-    </div>
-</div>
+function updateUserName(name) {
+
+    // Find dashboard greeting
+    const greeting = document.querySelector("h1");
+
+    if (greeting) {
+
+        const hour = new Date().getHours();
+
+        let greetingText;
+
+        if (hour < 12) {
+            greetingText = "Good morning";
+        }
+        else if (hour < 18) {
+            greetingText = "Good afternoon";
+        }
+        else {
+            greetingText = "Good evening";
+        }
+
+        greeting.textContent = `${greetingText}, ${name} 👋`;
+    }
+}
+
+
+// ========================================
+// CHECK IF USER IS ALREADY LOGGED IN
+// ========================================
+
+window.addEventListener("DOMContentLoaded", function () {
+
+    const savedName =
+        localStorage.getItem("decodeArenaUserName");
+
+    if (savedName) {
+
+        loginScreen.style.display = "none";
+
+        updateUserName(savedName);
+    }
+});
+
+
+// ========================================
+// QUICK MATCH BUTTON
+// ========================================
+
+const quickMatchButtons =
+    document.querySelectorAll("button");
+
+quickMatchButtons.forEach(function(button) {
+
+    if (button.textContent.includes("Quick Match")) {
+
+        button.addEventListener("click", function() {
+
+            alert("⚔️ Searching for an opponent...");
+
+        });
+
+    }
+
+});
+document.getElementById("quickMatch")
+    .addEventListener("click", function() {
+
+        alert("Quick Match started!");
+
+    });
